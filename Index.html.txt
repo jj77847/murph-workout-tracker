@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Murph Progression Tracker</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    margin: 0;
+    padding: 0 1rem;
+    background: #f9f9f9;
+    color: #222;
+  }
+  h1 {
+    text-align: center;
+    margin: 1rem 0 2rem;
+  }
+  section {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .beginner {
+    background-color: #e6f4ea;
+    border: 2px solid #3a9d23;
+  }
+  .intermediate {
+    background-color: #fff4e5;
+    border: 2px solid #d47e00;
+  }
+  .advanced {
+    background-color: #fbeaea;
+    border: 2px solid #b73232;
+  }
+  summary {
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    outline: none;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 0.3rem 0.5rem;
+    text-align: center;
+  }
+  th {
+    background-color: #ddd;
+  }
+  .checkbox-cell {
+    text-align: left;
+    padding-left: 1rem;
+  }
+  label {
+    cursor: pointer;
+  }
+  button {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #555;
+  }
+  @media (min-width: 600px) {
+    body {
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Murph Progression Tracker</h1>
+
+<section class="beginner">
+  <details open>
+    <summary>Beginner Plan (Weeks 1-6 + Half Murph Test)</summary>
+    <p><em>Goal:</em> Build strength and endurance for a Half Murph (800m run, 50 pull-ups, 100 push-ups, 150 squats, 800m run).</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Run Start</th>
+          <th>Rounds</th>
+          <th>Pull-Ups / rd</th>
+          <th>Push-Ups / rd</th>
+          <th>Squats / rd</th>
+          <th>Done</th>
+        </tr>
+      </thead>
+      <tbody id="beginner-tbody"></tbody>
+    </table>
+    <p><strong>Week 7 - Half Murph Test:</strong><br>
+    800m Run → 50 Pull-Ups → 100 Push-Ups → 150 Squats → 800m Run<br>
+    Partition however you like (e.g., 10 rounds of 5 pull-ups, 10 push-ups, 15 squats).</p>
+    <label><input type="checkbox" id="beginner-test"> Completed Half Murph Test</label>
+  </details>
+</section>
+
+<section class="intermediate">
+  <details>
+    <summary>Intermediate Plan (Weeks 1-6 + Full Murph Under 1 Hour)</summary>
+    <p><em>Goal:</em> Complete a Full Murph under 60 minutes.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Run Start</th>
+          <th>Rounds</th>
+          <th>Pull-Ups / rd</th>
+          <th>Push-Ups / rd</th>
+          <th>Squats / rd</th>
+          <th>Done</th>
+        </tr>
+      </thead>
+      <tbody id="intermediate-tbody"></tbody>
+    </table>
+    <p><strong>Week 7 - Full Murph Test:</strong><br>
+    1 mile Run → 100 Pull-Ups → 200 Push-Ups → 300 Squats → 1 mile Run<br>
+    Partition Cindy-style (20 rounds of 5 pull-ups, 10 push-ups, 15 squats).<br>
+    Goal: Under 60 minutes.</p>
+    <label><input type="checkbox" id="intermediate-test"> Completed Full Murph Test</label>
+  </details>
+</section>
+
+<section class="advanced">
+  <details>
+    <summary>Advanced Plan (Weeks 1-6 + Straight-Through Murph)</summary>
+    <p><em>Goal:</em> Complete a full Murph straight through without partitioning.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Run Start</th>
+          <th>Pull-Up Target</th>
+          <th>Push-Up Target</th>
+          <th>Squat Target</th>
+          <th>Done</th>
+        </tr>
+      </thead>
+      <tbody id="advanced-tbody"></tbody>
+    </table>
+    <p><strong>Week 7 - Straight-Through Murph Test:</strong><br>
+    1 mile Run → 100 Pull-Ups → 200 Push-Ups → 300 Squats → 1 mile Run<br>
+    No partitioning - complete all reps of each movement before moving to the next.<br>
+    Goal: Maintain form and minimize rest.</p>
+    <label><input type="checkbox" id="advanced-test"> Completed Straight-Through Murph Test</label>
+  </details>
+</section>
+
+<button id="reset">Reset Progress</button>
+
+<script>
+  // Data arrays
+  const beginnerWeeks = [
+    {week: 1, run: "400m", rounds: 5, pullups: 2, pushups: 4, squats: 6},
+    {week: 2, run: "400m", rounds: 6, pullups: 2, pushups: 5, squats: 8},
+    {week: 3, run: "600m", rounds: 7, pullups: 3, pushups: 6, squats: 10},
+    {week: 4, run: "800m", rounds: 8, pullups: 3, pushups: 7, squats: 12},
+    {week: 5, run: "800m", rounds: 9, pullups: 4, pushups: 8, squats: 14},
+    {week: 6, run: "800m", rounds: 10, pullups: 5, pushups: 10, squats: 15},
+  ];
+  const intermediateWeeks = [
+    {week: 1, run: "800m", rounds: 10, pullups: 3, pushups: 6, squats: 9},
+    {week: 2, run: "1 mile", rounds: 12, pullups: 3, pushups: 8, squats: 12},
+    {week: 3, run: "1 mile", rounds: 14, pullups: 4, pushups: 8, squats: 12},
+    {week: 4, run: "1 mile", rounds: 16, pullups: 4, pushups: 9, squats: 14},
+    {week: 5, run: "1 mile", rounds: 18, pullups: 5, pushups: 10, squats: 15},
+    {week: 6, run: "1 mile", rounds: 20, pullups: 5, pushups: 10, squats: 15},
+  ];
+  const advancedWeeks = [
+    {week: 1, run: "1 mile", pullups: "5x10 (50)", pushups: "5x20 (100)", squats: "5x30 (150)"},
+    {week: 2, run: "1 mile", pullups: "6x10 (60)", pushups: "6x20 (120)", squats: "6x30 (180)"},
+    {week: 3, run: "1 mile", pullups: "8x10 (80)", pushups: "8x20 (160)", squats: "8x30 (240)"},
+    {week: 4, run: "1 mile", pullups: "9x10 (90)", pushups: "9x20 (180)", squats: "9x30 (270)"},
+    {week: 5, run: "1 mile", pullups: "10x10 (100)", pushups: "10x20 (200)", squats: "10x30 (300)"},
+    {week: 6, run: "1 mile", pullups: "10x10 (100)", pushups: "10x20 (200)", squats: "10x30 (300)"},
+  ];
+
+  // Utility to create rows with checkboxes and restore from localStorage
+  function createRow(data, tbodyId, isAdvanced=false) {
+    const tbody = document.getElementById(tbodyId);
+    data.forEach(d => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${d.week}</td>
+        <td>${d.run}</td>
+        <td>${isAdvanced ? d.pullups : d.rounds || ''}</td>
+        <td>${isAdvanced ? d.pushups : d.pushups}</td>
+        <td>${isAdvanced ? d.squats : d.squats}</td>
+        <td class="checkbox-cell">
+          <label><input type="checkbox" data-key="${tbodyId}-${d.week}"> Done</label>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  createRow(beginnerWeeks, "beginner-tbody");
+  createRow(intermediateWeeks, "intermediate-tbody");
+  createRow(advancedWeeks, "advanced-tbody", true);
+
+  // Restore checked state from localStorage
+  function restoreChecks() {
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      const key = cb.dataset.key || cb.id;
+      if (localStorage.getItem(key) === "true") cb.checked = true;
+    });
+  }
+  restoreChecks();
+
+  // Save checked state on change
+  document.body.addEventListener('change', e => {
+    if (e.target.matches('input[type=checkbox]')) {
+      const key = e.target.dataset.key || e.target.id;
+      localStorage.setItem(key, e.target.checked);
+    }
+  });
+
+  // Reset progress button
+  document.getElementById('reset').addEventListener('click', () => {
+    if (confirm('Reset all progress?')) {
+      localStorage.clear();
+      restoreChecks();
+      document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+    }
+  });
+</script>
+
+</body>
+</html>
